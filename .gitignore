@@ -5,3 +5,5 @@ __pycache__/
 *.pyc
 targets/*
 !targets/.gitkeep
+logs/*
+!logs/.gitkeep
