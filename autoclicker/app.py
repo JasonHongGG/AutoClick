@@ -10,6 +10,7 @@ import pyscreeze
 from .config import load_config
 from .capture import VirtualDesktopCapture
 from .click import click
+from .log_images import ClickLogInfo, save_annotated_click_screenshot
 from .match import MultiScaleTemplateMatcher
 from .paths import list_target_images, resource_path
 
@@ -62,6 +63,22 @@ class AutoClickerApp:
                         print(f"Button '{img_name}' found at {click_point} (scale={found_scale}). Clicking...")
                     else:
                         print(f"Button '{img_name}' found at {click_point}. Clicking...")
+
+                    if self.config.log_clicks:
+                        try:
+                            saved = save_annotated_click_screenshot(
+                                screenshot_img=screenshot_img,
+                                geometry=geom,
+                                info=ClickLogInfo(
+                                    target_name=img_name,
+                                    click_point_screen=(int(click_point[0]), int(click_point[1])),
+                                    found_scale=float(found_scale) if found_scale is not None else None,
+                                ),
+                                log_dir=self.config.log_dir,
+                            )
+                            print(f"Saved click log: {saved}")
+                        except Exception as log_e:
+                            print(f"Warning: failed to save click log: {type(log_e).__name__}: {log_e}")
 
                     click(click_point, geometry=geom)
                     time.sleep(2)

@@ -53,6 +53,8 @@ class AppConfig:
     confidence: float
     grayscale: bool
     scales: list[float]
+    log_clicks: bool
+    log_dir: str
 
 
 def load_config() -> AppConfig:
@@ -62,9 +64,15 @@ def load_config() -> AppConfig:
     confidence = max(0.0, min(1.0, _env_float("AUTO_CLICKER_CONFIDENCE", 0.9)))
     grayscale = _env_bool("AUTO_CLICKER_GRAYSCALE", True)
     scales = _env_scales("AUTO_CLICKER_SCALES", "1.0")
+    log_clicks = _env_bool("AUTO_CLICKER_LOG_CLICKS", False)
+    log_dir = os.getenv("AUTO_CLICKER_LOG_DIR", "logs")
+    if log_dir is None or log_dir.strip() == "":
+        log_dir = "logs"
 
     return AppConfig(
         confidence=confidence,
         grayscale=grayscale,
         scales=scales,
+        log_clicks=log_clicks,
+        log_dir=log_dir,
     )

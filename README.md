@@ -22,6 +22,12 @@ This script automatically clicks the "Allow" button when it appears on the scree
 - `AUTO_CLICKER_GRAYSCALE` (default `1`)
 - `AUTO_CLICKER_SCALES` (default `1.0`)
 
+### Click Logging (Debug)
+If you want to verify *where* the tool is about to click (especially useful for multi-monitor / mixed-DPI setups), you can enable click logging. When enabled, the app saves a screenshot **right before each click** into a `logs/` folder and draws a red crosshair at the intended click position.
+
+- `AUTO_CLICKER_LOG_CLICKS` (default `0`)
+- `AUTO_CLICKER_LOG_DIR` (default `logs`)
+
 
 ## How to Build the Executable
 
