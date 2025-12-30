@@ -209,8 +209,11 @@ def _click_windows_virtual_desktop(x: int, y: int, geometry: VirtualDesktopGeome
         )
         user32.SendInput(1, ctypes.byref(inp), ctypes.sizeof(inp))
 
-    if not moved:
-        _send(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_VIRTUALDESK)
-
-    _send(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_VIRTUALDESK)
-    _send(MOUSEEVENTF_LEFTUP | MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_VIRTUALDESK)
+    # IMPORTANT:
+    # - For button events, Windows ignores dx/dy unless MOUSEEVENTF_MOVE is set.
+    # - SetCursorPos/SetPhysicalCursorPos can be DPI-virtualized on mixed-DPI setups.
+    # Therefore, always move via SendInput in virtual-desktop absolute coordinates
+    # right before clicking.
+    _send(MOUSEEVENTF_MOVE | MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_VIRTUALDESK)
+    _send(MOUSEEVENTF_LEFTDOWN)
+    _send(MOUSEEVENTF_LEFTUP)
