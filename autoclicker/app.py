@@ -68,15 +68,6 @@ class AutoClickerApp:
                     break
 
                 except pyscreeze.ImageNotFoundException as not_found:
-                    if not logged_not_found_hint:
-                        logged_not_found_hint = True
-                        print(
-                            "Image not found (this is normal). "
-                            "If it never finds anything, your target PNG may not match current DPI/scaling. "
-                            "You can tune matching via env vars: "
-                            "AUTO_CLICKER_CONFIDENCE (e.g. 0.58) and AUTO_CLICKER_GRAYSCALE (0/1). "
-                            f"Details: {not_found}"
-                        )
                     continue
 
                 except Exception as inner_e:
