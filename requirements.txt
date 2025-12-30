@@ -1,0 +1,6 @@
+pyautogui
+opencv-python
+pillow
+pyinstaller
+mss
+python-dotenv
