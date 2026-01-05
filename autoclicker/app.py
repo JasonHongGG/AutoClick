@@ -45,6 +45,9 @@ class AutoClickerApp:
         logged_not_found_hint = False
 
         while True:
+            loop_start = time.perf_counter()
+            clicked_this_loop = False
+
             capture = self.capture.screenshot()
             screenshot_img = capture.image
             geom = capture.geometry
@@ -81,7 +84,7 @@ class AutoClickerApp:
                             print(f"Warning: failed to save click log: {type(log_e).__name__}: {log_e}")
 
                     click(click_point, geometry=geom)
-                    time.sleep(2)
+                    clicked_this_loop = True
                     break
 
                 except pyscreeze.ImageNotFoundException as not_found:
@@ -93,7 +96,15 @@ class AutoClickerApp:
                         print(f"Scan error (first occurrence): {type(inner_e).__name__}: {inner_e}")
                     continue
 
-            time.sleep(0.5)
+            # If we clicked, honor an explicit cool-down first.
+            if clicked_this_loop:
+                time.sleep(self.config.click_delay)
+
+            # Throttle scanning to reduce CPU usage.
+            elapsed = time.perf_counter() - loop_start
+            sleep_for = float(self.config.scan_interval) - elapsed
+            if sleep_for > 0:
+                time.sleep(sleep_for)
 
 
 def main() -> None:

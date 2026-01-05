@@ -22,6 +22,12 @@ This script automatically clicks the "Allow" button when it appears on the scree
 - `AUTO_CLICKER_GRAYSCALE` (default `1`)
 - `AUTO_CLICKER_SCALES` (default `1.0`)
 
+### Performance Tuning
+If CPU usage is too high, reduce the scan rate:
+
+- `AUTO_CLICKER_SCAN_INTERVAL` (seconds, default `1.0`) — how often the app captures + scans the screen.
+- `AUTO_CLICKER_CLICK_DELAY` (seconds, default `2.0`) — cool-down after a successful click.
+
 ### Click Logging (Debug)
 If you want to verify *where* the tool is about to click (especially useful for multi-monitor / mixed-DPI setups), you can enable click logging. When enabled, the app saves a screenshot **right before each click** into a `logs/` folder and draws a red crosshair at the intended click position.
 

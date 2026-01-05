@@ -53,6 +53,8 @@ class AppConfig:
     confidence: float
     grayscale: bool
     scales: list[float]
+    scan_interval: float
+    click_delay: float
     log_clicks: bool
     log_dir: str
 
@@ -64,6 +66,14 @@ def load_config() -> AppConfig:
     confidence = max(0.0, min(1.0, _env_float("AUTO_CLICKER_CONFIDENCE", 0.9)))
     grayscale = _env_bool("AUTO_CLICKER_GRAYSCALE", True)
     scales = _env_scales("AUTO_CLICKER_SCALES", "1.0")
+    # Throttle scanning to reduce CPU usage.
+    scan_interval = _env_float("AUTO_CLICKER_SCAN_INTERVAL", 1.0)
+    if scan_interval < 0:
+        scan_interval = 1.0
+
+    click_delay = _env_float("AUTO_CLICKER_CLICK_DELAY", 2.0)
+    if click_delay < 0:
+        click_delay = 2.0
     log_clicks = _env_bool("AUTO_CLICKER_LOG_CLICKS", False)
     log_dir = os.getenv("AUTO_CLICKER_LOG_DIR", "logs")
     if log_dir is None or log_dir.strip() == "":
@@ -73,6 +83,8 @@ def load_config() -> AppConfig:
         confidence=confidence,
         grayscale=grayscale,
         scales=scales,
+        scan_interval=scan_interval,
+        click_delay=click_delay,
         log_clicks=log_clicks,
         log_dir=log_dir,
     )
